@@ -1,0 +1,9 @@
+# Ignore vim swap
+*.swo
+*.swp
+
+# Ignore object files 
+*.o
+
+# Ignore langserver junk
+.ccls-cache/
