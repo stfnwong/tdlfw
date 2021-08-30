@@ -6,6 +6,7 @@ BIN_DIR=bin
 OBJ_DIR=obj
 SRC_DIR=src
 TEST_DIR=test
+PROGRAM_DIR=programs
 TEST_BIN_DIR=$(BIN_DIR)/test
 TOOL_DIR=tools
 
@@ -52,10 +53,25 @@ $(TESTS): $(TEST_OBJECTS) $(OBJECTS)
 		-o $(TEST_BIN_DIR)/$@ $(LIBS) $(TEST_LIBS)
 
 
+# ==== STANDALONE PROGRAMS ==== #
+PROGRAMS=c1_template 
+
+PROGRAM_SOURCES  = $(wildcard $(PROGRAM_DIR)/*.cpp)
+PROGRAM_OBJECTS  := $(PROGRAM_SOURCES:$(PROGRAM_DIR)/%.cpp=$(OBJ_DIR)/%.o)
+$(PROGRAM_OBJECTS): $(OBJ_DIR)/%.o : $(PROGRAM_DIR)/%.cpp 
+	$(CXX) $(CXXFLAGS) $(INCS) -c $< -o $@ 
+
+
+$(PROGRAMS): $(PROGRAM_OBJECTS)
+	$(CXX) $(LDFLAGS) $(OBJ_DIR)/$@.o -o $(BIN_DIR)/$@ $(LIBS)
+
+
 # ======== MAIN TARGETS ======== #
-all : test 
+all : test programs
 
 test : $(TESTS)
+
+programs: $(PROGRAMS)
 
 clean:
 	rm -rfv *.o $(OBJ_DIR)/*.o 
