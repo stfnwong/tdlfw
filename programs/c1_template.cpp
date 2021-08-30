@@ -64,7 +64,7 @@ template <typename T> using RemoveReferenceConst = typename RemoveReferenceConst
 
 
 
-int main(void)
+int main(int argc, char *argv[])
 {
     //FUN<int> that_fun;
     //FUN<long>::type h = 3;

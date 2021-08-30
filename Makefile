@@ -54,7 +54,7 @@ $(TESTS): $(TEST_OBJECTS) $(OBJECTS)
 
 
 # ==== STANDALONE PROGRAMS ==== #
-PROGRAMS=c1_template 
+PROGRAMS=c1_template ex1_meta
 
 PROGRAM_SOURCES  = $(wildcard $(PROGRAM_DIR)/*.cpp)
 PROGRAM_OBJECTS  := $(PROGRAM_SOURCES:$(PROGRAM_DIR)/%.cpp=$(OBJ_DIR)/%.o)
