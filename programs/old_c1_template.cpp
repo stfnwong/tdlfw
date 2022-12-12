@@ -75,9 +75,10 @@ constexpr int x1 = BaseFunction_<2, 3>::value;    // dependent result (ie: depen
 constexpr int x2 = Function<2, 3>;
 
 // ========
-// Templates as the input of metafunctions and container templates
+// 1.2: Template Template parameters and Container Templates
 // ========
 
+// 1.2.1 template as the input of a metafunction
 template <template <typename> class T1, typename T2> 
 struct meta_fun_struct {
     using type = typename T1<T2>::type;
@@ -87,6 +88,17 @@ template <template <typename> class T1, typename T2>
 using meta_fun = typename meta_fun_struct<T1, T2>::type;
 
 meta_fun<std::remove_reference, int&> h = 3;
+
+// 1.2.2 template as the output of a metafunction
+template <bool add_or_remove_ref> struct OutFun_;
+
+template <> struct OutFun_<true> {
+    template <typename T> 
+        using type = std::add_lvalue_reference<T>;
+};
+
+
+
 
 
 void ex_just_an_int(void)

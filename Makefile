@@ -53,29 +53,49 @@ $(TESTS): $(TEST_OBJECTS) $(OBJECTS)
 		-o $(TEST_BIN_DIR)/$@ $(LIBS) $(TEST_LIBS)
 
 
-# ==== STANDALONE PROGRAMS ==== #
-PROGRAMS=c1_template ex1_meta
+# ==== CHAPTER PROGRAMS ==== #
+CHAPTER_SOURCES := $(wildcard $(PROGRAM_DIR)/c1*.cpp)
+CHAPTER_OBJECTS := $(CHAPTER_SOURCES:$(PROGRAM_DIR)/%.cpp=$(OBJ_DIR)/%.o)
+# Names for each program
+CHAPTER_PROGRAMS = $(notdir $(basename $(CHAPTER_SOURCES)))
 
-PROGRAM_SOURCES  = $(wildcard $(PROGRAM_DIR)/*.cpp)
-PROGRAM_OBJECTS  := $(PROGRAM_SOURCES:$(PROGRAM_DIR)/%.cpp=$(OBJ_DIR)/%.o)
-$(PROGRAM_OBJECTS): $(OBJ_DIR)/%.o : $(PROGRAM_DIR)/%.cpp 
-	$(CXX) $(CXXFLAGS) $(INCS) -c $< -o $@ 
+$(CHAPTER_OBJECTS): $(OBJ_DIR)/%.o : $(PROGRAM_DIR)/%.cpp
+	$(CXX) $(CXXFLAGS) $(INCS) -c $< -o $@
 
-
-$(PROGRAMS): $(PROGRAM_OBJECTS)
+$(CHAPTER_PROGRAMS): $(CHAPTER_OBJECTS)
 	$(CXX) $(LDFLAGS) $(OBJ_DIR)/$@.o -o $(BIN_DIR)/$@ $(LIBS)
 
 
+
+# ==== STANDALONE PROGRAMS ==== #
+#PROGRAMS=c1_template ex1_meta
+#
+#PROGRAM_SOURCES  = $(wildcard $(PROGRAM_DIR)/*.cpp)
+#PROGRAM_OBJECTS  := $(PROGRAM_SOURCES:$(PROGRAM_DIR)/%.cpp=$(OBJ_DIR)/%.o)
+#$(PROGRAM_OBJECTS): $(OBJ_DIR)/%.o : $(PROGRAM_DIR)/%.cpp 
+#	$(CXX) $(CXXFLAGS) $(INCS) -c $< -o $@ 
+#
+#
+#$(PROGRAMS): $(PROGRAM_OBJECTS)
+#	$(CXX) $(LDFLAGS) $(OBJ_DIR)/$@.o -o $(BIN_DIR)/$@ $(LIBS)
+#
+
 # ======== MAIN TARGETS ======== #
-all : test programs
+#all : test programs
+all: test chapter
 
 test : $(TESTS)
 
-programs: $(PROGRAMS)
+#programs: $(PROGRAMS)
+
+chapter: $(CHAPTER_PROGRAMS)
+
+chap_obj: $(CHAPTER_OBJECTS)
 
 clean:
 	rm -rfv *.o $(OBJ_DIR)/*.o 
-	rm -rfv bin/test/test_*
+	rm -rfv bin/*
+	#rm -rfv bin/test/test_*
 
 print-%:
 	@echo $* = $($*)
