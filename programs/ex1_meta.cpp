@@ -26,13 +26,23 @@ template <> struct AllOdd<0>
     constexpr static bool value = is_odd<0>;
 };
 
+// alternative to using the short-circuit AND above is to create an
+// auxilliary metafunction.
+template <bool cur, typename t_next> constexpr static bool AndValue = false;
+
+template <typename t_next> constexpr static bool AndValue<true, t_next> = t_next::value;
 
 
 int main(int argc, char *argv[])
 {
+    // Stuff for problem 7 in Chapter 1
     std::cout << "AllOdd<5>::value : " << AllOdd<5>::value << std::endl;
     std::cout << "AllOdd<5>::is_cur_odd : " << AllOdd<5>::is_cur_odd << std::endl;
     std::cout << "AllOdd<5>::is_pre_odd : " << AllOdd<5>::is_pre_odd << std::endl;
+
+    std::cout << "AllOdd<4>::value : " << AllOdd<4>::value << std::endl;
+    std::cout << "AllOdd<4>::is_cur_odd : " << AllOdd<4>::is_cur_odd << std::endl;
+    std::cout << "AllOdd<4>::is_pre_odd : " << AllOdd<4>::is_pre_odd << std::endl;
 
     return 0;
 }
